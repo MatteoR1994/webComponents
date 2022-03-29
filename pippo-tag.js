@@ -1,52 +1,51 @@
-class PippoTag extends HTMLElement{
+class PippoTag extends HTMLElement {
+    styleUrl = './work-style.css';
 
-    styleUrl = './work-style.css'
-
-    htmlTemplate =`
+    htmlTemplate = `
     <h2>#USERNAME</h2>
     <h2>#MAIL</h2>
     `;
 
-    constructor(){
+    constructor() {
         super();
-        this.attachShadow({mode: 'open'});
-        this.getAttributes()
-        this.initStyle()
-        this.initTag()
+        this.attachShadow({ mode: 'open' });
+        this.getAttributes();
+        this.initStyle();
+        this.initTag();
     }
 
-    attributeChangedCallback(){
+    attributeChangedCallback() {
         this.getAttributes();
-        this.initTag()
+        this.initTag();
     }
 
     static get observedAttributes() { return ['pippo-user', 'has-button']; }
 
-    getAttributes(){
+    getAttributes() {
         if (this.getAttribute('pippo-user')) {
-            this.user = JSON.parse(this.getAttribute('pippo-user'))
+            this.user = JSON.parse(this.getAttribute('pippo-user'));
         }
         if (this.getAttribute('has-button')) {
             this.hasButton = this.getAttribute('has-button') === 'true';
         }
     }
 
-    initStyle(){
+    initStyle() {
         fetch(this.styleUrl)
-        .then(resp => resp.text()).then(
-            myStyle => {
-                const style = document.createElement('style');
-                style.innerText = myStyle;
-                this.shadowRoot.appendChild(style);
-            }
-        )
+            .then((resp) => resp.text()).then(
+                (myStyle) => {
+                    const style = document.createElement('style');
+                    style.innerText = myStyle;
+                    this.shadowRoot.appendChild(style);
+                },
+            );
     }
 
-    initTag(){
+    initTag() {
         if (this.user) {
             this.htmlTemplate = this.htmlTemplate.replace('#USERNAME', this.user.name);
             this.htmlTemplate = this.htmlTemplate.replace('#MAIL', this.user.mail);
-    
+
             this.shadowRoot.innerHTML = this.htmlTemplate;
         }
         if (this.hasButton) {
@@ -56,7 +55,7 @@ class PippoTag extends HTMLElement{
 
             button.onclick = () => this.buttonClicked();
 
-            this.shadowRoot.appendChild(button)
+            this.shadowRoot.appendChild(button);
         }
         // const node = document.createTextNode('pippo');
         // const p = document.createElement('p');
@@ -65,11 +64,11 @@ class PippoTag extends HTMLElement{
         // this.shadowRoot.appendChild(p);
     }
 
-    buttonClicked(){
+    buttonClicked() {
         const event = new CustomEvent('user-selected', {
             bubbles: true,
-            detail: this.user
-          });
+            detail: this.user,
+        });
 
         this.dispatchEvent(event);
     }

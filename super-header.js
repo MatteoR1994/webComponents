@@ -1,19 +1,21 @@
-class SuperHeader extends HTMLHeadingElement { // HTMLHeadingElement -> prende tutti gli h, da h1 a h6.
+class SuperHeader extends HTMLHeadingElement {
+    // HTMLHeadingElement -> prende tutti gli h, da h1 a h6.
 
+    // eslint-disable-next-line no-useless-constructor
     constructor() {
         super();
     }
 
-    attributeChangedCallback(){ // Viene chiamato ogni volta che cambia un attributo
+    attributeChangedCallback() { // Viene chiamato ogni volta che cambia un attributo
         this.getAttributes();
-        this.initTag()
+        this.initTag();
     }
 
     static get observedAttributes() { return ['user-count']; }
 
-    getAttributes(){
+    getAttributes() {
         if (this.getAttribute('user-count')) {
-            this.userCount = parseInt(this.getAttribute('user-count'));
+            this.userCount = parseInt(this.getAttribute('user-count'), 10);
         }
     }
 
@@ -28,12 +30,11 @@ class SuperHeader extends HTMLHeadingElement { // HTMLHeadingElement -> prende t
             container.id = 'additional-content';
         }
         const span = document.createElement('span');
-        const node = document.createTextNode('count: ' + this.userCount);
+        const node = document.createTextNode(`count: ${this.userCount}`);
         span.appendChild(node);
         container.appendChild(span);
         this.appendChild(container);
     }
-
 }
 
 window.customElements.define('super-header', SuperHeader, { extends: 'h1' });
