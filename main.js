@@ -4,9 +4,11 @@ const users = [
     {name: 'andrea', mail: 'popolo@grr.la'},
     {name: 'francesca', mail: 'paperina@grr.la'},
     {name: 'simone', mail: 'pluto@grr.la'},
-    {name: 'marco', mail: 'pippo@grr.la'}
+    {name: 'marco', mail: 'pippo@grr.la'},
+    {name: 'matteo', mail: 'topolino@grr.la'}
 ]
 
+document.getElementById('main-title').setAttribute('user-count', users.length);
 
 for (const user of users) {
     const pippoTag = document.createElement('pippo-tag');
